@@ -343,13 +343,23 @@ int  session(unsigned char session_max, unsigned char actual_session)
 
   return session(session_max, next_session);
 }
+void help()
+{
+  printf("\nUsage: simple-pomodoro-cli number_of_session");
+}
 
 
 int main(int argc, char *argv[])
 {     
   if (argc != 2)
   {
-    fprintf(stderr,"You provided too much or too few arguments");
+    fprintf(stderr,"You provided too much or too few arguments.\n");
+    help();
+    exit(1);
+  }
+  if ((argv[2] == "--help") || (argv[2] == "-h") || (argv[2] == "-help"))
+  {
+    help();
     exit(1);
   }
 
