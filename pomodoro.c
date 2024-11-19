@@ -28,11 +28,39 @@ char* home_dir(char* input, int len_string)
   return path_output;
 }
 
+void parsing_audio_file_config(char* audio_config_path)
+{
+  int count;
+  char* output;
+  int len_output;
+  char* temp_config_path;
+
+  count = 0;
+  
+  if ((*(audio_config_path + 0) == '~'))
+  {
+    len_output =  strlen(getenv("HOME")) + strlen(audio_config_path) + 25 ;
+
+    temp_config_path = malloc(sizeof(char) * (strlen(audio_config_path) ));
+
+    while (count < (strlen(audio_config_path) ))
+    {
+      temp_config_path[count]  = audio_config_path[count + 1];
+      count++;
+    }
+      
+    notification_audio_file = malloc(sizeof(char) * len_output);
+    notification_audio_file = home_dir(temp_config_path, len_output);
+    
+  }
+}
+
 void config_file_treatment(char* file_path)
 {
   CfgError err;
   CfgEntry *entries;
   int parsing_state;
+  char* parsing_audio_conf_path;
 
   entries = malloc(64 * sizeof(CfgEntry));
   Cfg cfg = {.entries = entries, .capacity = 64};
@@ -49,7 +77,8 @@ void config_file_treatment(char* file_path)
   long_pause_time = cfg_get_int(&cfg, "long_pause.time", 15);
   long_pause_interval = cfg_get_int(&cfg, "long_pause.interval", 4);
   work_time = cfg_get_int(&cfg, "work.time", 25);
-  notification_audio_file = cfg_get_string(&cfg, "notification_audio.filepath" ,"./audio/initial_d.wav");
+  parsing_audio_conf_path = cfg_get_string(&cfg, "notification_audio.filepath" ,"~/.config/simple-pomodoro-cli/audio/initial_d.wav");
+  parsing_audio_file_config(parsing_audio_conf_path);
   free(entries);
   
 }
@@ -77,7 +106,7 @@ void config_file_check()
     int change = chmod(file_path, 0666);
 
     FILE* fileptr = fopen(file_path, "w");
-    fprintf(fileptr, "pause.time: 5\nlong_pause.time: 15\nlong_pause.interval: 4\nwork.time: 25\notification_audio.filepath: %c./audio/initial_d.wav%c", '"','"'  );
+    fprintf(fileptr, "pause.time: 5\nlong_pause.time: 15\nlong_pause.interval: 4\nwork.time: 25\nnotification_audio.filepath: %c~/.config/simple-pomodoro-cli/audio/initial_d.wav%c", '"','"'  );
     fclose(fileptr);
     config_file_treatment(file_path);
   }
@@ -204,6 +233,7 @@ int session_period(int minutes_max, char* label)
   ma_device device;
 
 
+
   result = ma_decoder_init_file(notification_audio_file, NULL, &decoder);
   if (result != MA_SUCCESS) {
       endwin();
@@ -230,6 +260,7 @@ int session_period(int minutes_max, char* label)
   period_time = 0;
   minutes = 0;
   seconds = 0;
+
 
   while (minutes < minutes_max)
   {
@@ -367,6 +398,8 @@ int main(int argc, char *argv[])
 
   int argument;
 
+
+
   win = initscr();
   curs_set(0);
   noecho();
@@ -394,6 +427,7 @@ int main(int argc, char *argv[])
   refresh();
   getch();
   endwin();
+  free(notification_audio_file);
 
 
   return 0;
