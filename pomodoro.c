@@ -51,6 +51,7 @@ void parsing_audio_file_config(char* audio_config_path)
       
     notification_audio_file = malloc(sizeof(char) * len_output);
     notification_audio_file = home_dir(temp_config_path, len_output);
+    free(temp_config_path);
     
   }
 }
@@ -111,6 +112,7 @@ void config_file_check()
     fclose(fileptr);
     config_file_treatment(file_path);
   }
+  free(file_path);
   
 }
 
@@ -141,6 +143,7 @@ void config_check()
     exit(1);
   }
 
+  free(folder_path);
 }
 
 void data_callback(ma_device* pDevice, void* pOutput, const void* pInput, ma_uint32 frameCount)
