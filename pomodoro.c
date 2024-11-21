@@ -131,7 +131,7 @@ void config_check()
   }
   else if (errno == ENOENT) //if folder doesnt exist
   {
-    int mkdir_state = mkdir(folder_path, 0777);
+    int mkdir_state = mkdir(folder_path, 0755);
     config_file_check();
   }
   else
