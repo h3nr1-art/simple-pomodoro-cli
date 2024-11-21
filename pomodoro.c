@@ -77,7 +77,11 @@ void config_file_treatment(char* file_path)
   long_pause_time = cfg_get_int(&cfg, "long_pause.time", 15);
   long_pause_interval = cfg_get_int(&cfg, "long_pause.interval", 4);
   work_time = cfg_get_int(&cfg, "work.time", 25);
+<<<<<<< HEAD
   parsing_audio_conf_path = cfg_get_string(&cfg, "notification_audio.filepath" ,"~/.config/simple-pomodoro-cli/audio/initial_d.wav");
+=======
+  parsing_audio_conf_path = cfg_get_string(&cfg, "notification_audio.filepath" ,"~/.cache/simple-pomodoro-cli/audio/initial_d.wav");
+>>>>>>> 73f9f18 (updated make file)
   parsing_audio_file_config(parsing_audio_conf_path);
   free(entries);
   
@@ -131,7 +135,11 @@ void config_check()
   }
   else if (errno == ENOENT) //if folder doesnt exist
   {
+<<<<<<< HEAD
     int mkdir_state = mkdir(folder_path, 0755);
+=======
+    int mkdir_state = mkdir(folder_path, 0777);
+>>>>>>> 73f9f18 (updated make file)
     config_file_check();
   }
   else

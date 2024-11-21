@@ -5,4 +5,10 @@ It uses ncurses and [simple-config](https://github.com/0xHaru/Simple-Config/tree
 
 There's a config file that will be created in .config for your personnal settings.
 
+<<<<<<< HEAD
 For building it, simply use : 'sudo make install'
+=======
+For building it, use these commands :
+'''make prepare'''
+'''sudo make install'''
+>>>>>>> 73f9f18 (updated make file)
