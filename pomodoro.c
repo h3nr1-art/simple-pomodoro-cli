@@ -132,11 +132,7 @@ void config_check()
   }
   else if (errno == ENOENT) //if folder doesnt exist
   {
-<<<<<<< HEAD
     int mkdir_state = mkdir(folder_path, 0755);
-=======
-    int mkdir_state = mkdir(folder_path, 0777);
->>>>>>> 73f9f18 (updated make file)
     config_file_check();
   }
   else
@@ -428,7 +424,16 @@ int main(int argc, char *argv[])
   getch_w_exit();
   clear();
   nodelay(win, TRUE);
-  session(argument,0);
+  if (getch() != 'q')
+  {
+    session(argument,0);
+  }
+  else 
+  {
+    free(notification_audio_file);
+    endwin();
+    exit(1);
+  }
   refresh();
   getch();
   endwin();
